@@ -1,4 +1,4 @@
-# Notes Repository: Computing Tools 2018, Alexa DiNicola
+## Notes Repository: Computing Tools 2018, Alexa DiNicola
 
 These are my class notes for Cécile's 2018 course, Statistics 679: Computing Tools
 for Data Analytics, offered at UW-Madison in fall semester 2018.

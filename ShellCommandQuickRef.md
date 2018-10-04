@@ -10,14 +10,16 @@
 - ``top``: show the most demanding processes currently running |
 
 ## Command history
-| ``history``               | list previously-entered commands (long list!) |
+|   |   |
+| ---------------------------- | --- |
+| ``history``                  | list previously-entered commands (long list!) |
 | ``history \| tail -n [num]`` | list only the last [num] previous commands |
-| ``![num]``                | repeat command [num] in the history |
-| ``[Ctrl-R] [text]``       | searches your history for the most recent command matching [text]; press again to search back from there, etc. |
-| ``!$``                    | last word of the previous command (can be used in other commands) |
-| ``echo !$``               | prints last word of previous command |
-| ``xargs``                 | after a pipe, passes the prev command’s output as an argument (not standard input) |
-| ``ls *.txt \| xargs cat`` | prints (using cat) the contents of all text-files in current dir |
+| ``![num]``                   | repeat command [num] in the history |
+| ``[Ctrl-R] [text]``          | searches your history for the most recent command matching [text]; press again to search back from there, etc. |
+| ``!$``                       | last word of the previous command (can be used in other commands) |
+| ``echo !$``                  | prints last word of previous command |
+| ``xargs``                    | after a pipe, passes the prev command’s output as an argument (not standard input) |
+| ``ls *.txt \| xargs cat``    | prints (using cat) the contents of all text-files in current dir |
 
 ## Special characters
 | ``*``        | wildcard, matches zero or more characters |

@@ -1,15 +1,37 @@
-# Basic shell commands
+## Contents:
 
-## Getting help
+- [Basic shell commands](#basic-shell-commands)
+    - [Getting help](#getting-help)
+    - [Command history](#command-history)
+    - [Special characters](#special-characters)
+    - [Environmental variables](#environmental-variables)
+    - [Shortcut commands](#shortcut-commands)
+    - [File handling](#file-handling)
+    - [Text editing](#text-editing)
+    - [Searching & regex](#searching-&-regex)
+- [Shell Scripting](#shell-scripting)
+    - [Pipes & redirection](#pipes-&-redirection)
+    - [Arithmetic](#arithmetic)
+    - [The basic loop](#the-basic-loop)
+    - [Conditional statements](#conditional-statements)
+- [Git and version control](#git-and-version-control)
+- [Remote server commands](#remote-server-commands)
+    - [CHTC and HTCondor](#chtc-and-htcondor)
+
+---
+
+##Basic shell commands
+
+###Getting help
 - ``[command] --help``: brief help on a command
-- ``man [cmd]``: manual page, i.e. extended help on ``[cmd``
+- ``man [cmd]``: manual page, i.e. extended help on ``[cmd]``
 - ``echo [var]``: print the value of a variable or string
 - ``whoami``: print your username
 - ``ps``: list running processes that were started from current terminal window
 - ``ps -u [user]``: list all running processes started by [user]
 - ``top``: show the most demanding processes currently running
 
-## Command history
+###Command history
 - ``history``: list previously-entered commands (long list!)
 - ``history \| tail -n [num]``: list only the last [num] previous commands
 - ``![num]``: repeat command [num] in the history
@@ -19,7 +41,7 @@
 - ``xargs``: after a pipe, passes the prev command’s output as an argument (not standard input)
 - ``ls *.txt \| xargs cat``: prints (using cat) the contents of all text-files in current dir
 
-## Special characters
+###Special characters
 - ``*``: wildcard, matches zero or more characters
 - ``?``: wildcard, matches exactly one character
 - ``\``: escape character (e.g. to cd into a folder with a space in its name)
@@ -29,7 +51,7 @@
 - ``""``: Lines in double-quotes are interpreted as strings, but variables in them are parsed.
 - ``''``: Lines in single-quotes are interpreted strictly as strings — no parsing.
 
-## Environmental variables
+### Environmental variables
 - ``$PS1``: the prompt string. default $PS1 = “\h:\W \u\$”
 - ``$PATH``: colon-separated list of paths to bin folders
 
@@ -40,7 +62,7 @@ parse_git_branch() { # defines a shell function: run "git branch" and extract br
 PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 ```
 
-## Shortcut commands
+### Shortcut commands
 - ``^A`` (Ctrl-A): move cursor to the start of the line
 - ``^E``: move cursor to the end of the line
 - ``^C``: stop/kill a running program, cancel current action
@@ -53,7 +75,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``kill``: send a signal to a process
 - ``kill -9 [PID]``: kill process [PID] 
 
-## File handling
+### File handling
 - ``pwd``: “print working directory,” i.e. state your current location
 - ``cd``: “change directory.” With no arguments, takes you to your home directory.
     - ``cd .. ``: go to the parent directory (up one level)
@@ -100,7 +122,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``cat [1] [2]``: concatenate ``1`` and ``2``
 - ``exit``:
 
-## Text editing
+### Text editing
 - ``open [filename]``: use default program to open [filename]
 - ``cat [filename]`` : print the full text of a file
 - ``less [filename]``: print the text of a file, page by page. Name from “less is more.”
@@ -141,8 +163,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
   - ``tar -tvf archive.tar``: list all files in archive.tar, verbosely
   - ``tar -xf archive.tar``: extract all files from archive.tar
 
-
-## Searching & regex
+### Searching & regex
 - ``find "and"``: search for files with names containing “and”
     - ``-type d``: find directories
     - ``-type f``: find files
@@ -178,14 +199,15 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 
 ---
 
-# Shell Scripting
+## Shell Scripting
+
 - ``bash [scriptname]``: execute [scriptname] as a bash shell script
 - ``{1..9}``: set of the integers 1-9
 - ``tail -f [file]``: “follow” a file, displaying its last few lines in realtime as the file is updated
 - ``/dev/null``: “null device”, a black hole: redirect things here to delete them
 - ``[command] &``: execute [command] in the background
 
-## Pipes & redirection
+### Pipes & redirection
 - ``[command] > [file]``: redirect output of [command] and save it as a textfile, [file]
     - ``[command] 0> [file]``: save inputs to [command] as [file]
     - ``[command] 1> [file]``: save outputs from [command] as [file]
@@ -196,7 +218,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``>>``: instead appends output of command as new line(s) at end of file
 - ``[line1] | [line2]``: uses output of [line1] as input to [line2]
 
-## Arithmetic
+### Arithmetic
 - ``((i++))``: increment variable i (set value of variable i to i+1)
 - ``((i+=1))``: increment variable i
 - ``((i--))``: decrement variable i
@@ -205,12 +227,12 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``echo ((++i))``: increment i, then print the new value
 - ``echo ((i++))``: print value of i, then increment it
 
-## The basic loop
+### The basic loop
 ``for [varname] in [listofinputs] ; do [command] ; done
 - ``${varname}``: return variable string [varname], which was an argument (without the $)
 - ``${varname:X:Y}``: return Y characters of varname, starting at position X
 
-##Conditional statements
+### Conditional statements
 ```
 if [ $i -lt 800 ] # (the spaces after `[` and before `]` are REQUIRED)
 then
@@ -228,7 +250,7 @@ then
 fi
 ```
 
-Some conditional-test expressions:
+#### Some conditional-test expressions:
 - ``-z str``: string str is empty
 - ``str1 = str2``: strings ``str1`` and ``str2`` are identical.
 	- not identical: ``str1 != str2``
@@ -250,7 +272,7 @@ Some conditional-test expressions:
 
 ---
 
-# Git and version control
+## Git and version control
 (needs to be updated)
 - ``git status``: 
 - ``git add [file]``: 
@@ -264,7 +286,7 @@ Some conditional-test expressions:
 
 ---
 
-# Remote server commands
+## Remote server commands
 - ``ssh adinicola@submit-3.chtc.wisc.edu``: connect to my submit server
 - ``cd /mnt/gluster/adinicola``: move to my gluster directory
 - ``cd /home/adinicola``: move back to my home directory on the submit server
@@ -275,14 +297,14 @@ Some conditional-test expressions:
 - ``/Users/Alexa/.ssh/id_rsa``: my private key
 - ``/Users/Alexa/.ssh/id_rsa.pub``: my public key
 
-## CHTC and HTCondor
+### CHTC and HTCondor
 <http://chtc.cs.wisc.edu/>
 <http://research.cs.wisc.edu/htcondor/manual/current/2_5Submitting_Job.html>
 <http://research.cs.wisc.edu/htcondor/manual/current/2_6Managing_Job.html>
 - ``condor_submit [file].sub``: submit an HTCondor job, per the .sub file provided
 - ``condor_q``: view submitted/running/idle/held jobs
     - ``condor_q -hold``: see why a job, or any/all of my jobs, is held
-		(see also <http://research.cs.wisc.edu/htcondor/manual/current/12_Appendix_A.html#HoldReasonCode-job-attribute>)_
+		(see also <http://research.cs.wisc.edu/htcondor/manual/current/12_Appendix_A.html#HoldReasonCode-job-attribute>)
     - ``condor_q -analyze [job ID]``: see diagnostic info on [job]
 - ``condor_rm [job ID]``: flag a job for cancellation & removal
     - ``condor_rm [username]``: flag all [username]’s jobs for cancellation & removal

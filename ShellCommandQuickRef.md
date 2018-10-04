@@ -6,10 +6,10 @@
     - [Special characters](#special-characters)
     - [Environmental variables](#environmental-variables)
     - [Shortcut commands](#shortcut-commands)
-    - [File handling](#file-handling)
+- [File handling](#file-handling)
     - [Text editing](#text-editing)
     - [Searching & regex](#searching-&-regex)
-- [Shell Scripting](#shell-scripting)
+- [Shell scripting](#shell-scripting)
     - [Pipes & redirection](#pipes-&-redirection)
     - [Arithmetic](#arithmetic)
     - [The basic loop](#the-basic-loop)
@@ -20,9 +20,9 @@
 
 ---
 
-##Basic shell commands
+## Basic shell commands
 
-###Getting help
+### Getting help
 - ``[command] --help``: brief help on a command
 - ``man [cmd]``: manual page, i.e. extended help on ``[cmd]``
 - ``echo [var]``: print the value of a variable or string
@@ -31,7 +31,7 @@
 - ``ps -u [user]``: list all running processes started by [user]
 - ``top``: show the most demanding processes currently running
 
-###Command history
+### Command history
 - ``history``: list previously-entered commands (long list!)
 - ``history \| tail -n [num]``: list only the last [num] previous commands
 - ``![num]``: repeat command [num] in the history
@@ -41,7 +41,7 @@
 - ``xargs``: after a pipe, passes the prev command’s output as an argument (not standard input)
 - ``ls *.txt \| xargs cat``: prints (using cat) the contents of all text-files in current dir
 
-###Special characters
+### Special characters
 - ``*``: wildcard, matches zero or more characters
 - ``?``: wildcard, matches exactly one character
 - ``\``: escape character (e.g. to cd into a folder with a space in its name)
@@ -75,7 +75,9 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``kill``: send a signal to a process
 - ``kill -9 [PID]``: kill process [PID] 
 
-### File handling
+---
+
+## File handling
 - ``pwd``: “print working directory,” i.e. state your current location
 - ``cd``: “change directory.” With no arguments, takes you to your home directory.
     - ``cd .. ``: go to the parent directory (up one level)
@@ -199,7 +201,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 
 ---
 
-## Shell Scripting
+## Shell scripting
 
 - ``bash [scriptname]``: execute [scriptname] as a bash shell script
 - ``{1..9}``: set of the integers 1-9

@@ -341,7 +341,7 @@ fi
 
 ## Remote server commands
 
-## Checksums
+### Checksums
 
 - ``shasum [thing]``: get the SHA checksum for ``[thing]`` (a file, string, etc)
 - `md5 [thing]`: get the MD5 checksum for `[thing]`

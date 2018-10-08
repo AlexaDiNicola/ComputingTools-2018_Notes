@@ -4,8 +4,8 @@
     - [Getting help](#getting-help)
     - [Command history](#command-history)
     - [Special characters](#special-characters)
-    - [Environmental variables](#environmental-variables)
     - [Shortcut commands](#shortcut-commands)
+    - [Environmental variables](#environmental-variables)
 - [File handling](#file-handling)
     - [Text editing](#text-editing)
     - [Searching & regex](#searching-&-regex)
@@ -14,15 +14,24 @@
     - [Arithmetic](#arithmetic)
     - [The basic loop](#the-basic-loop)
     - [Conditional statements](#conditional-statements)
-- [Git and version control](#git-and-version-control)
+    	- [Conditional examples](#conditional-examples)
+    	- [Some conditional-test expressions](#some-conditional-test-expressions)
+- [Git: collaboration & version control](#git-collaboration-and-version-control)
+	- [Local repository commands](#local-repository-commands)
+	- [Github sync and collaboration](#github-sync-and-collaboration)
 - [Remote server commands](#remote-server-commands)
+	- [Checksums](#checksums)
+	- [SSH](#ssh)
     - [CHTC and HTCondor](#chtc-and-htcondor)
 
 ---
 
+
 ## Basic shell commands
 
+
 ### Getting help
+
 - ``[command] --help``: brief help on a command
 - ``man [cmd]``: manual page, i.e. extended help on ``[cmd]``
 - ``echo [var]``: print the value of a variable or string
@@ -32,6 +41,7 @@
 - ``top``: show the most demanding processes currently running
 
 ### Command history
+
 - ``history``: list previously-entered commands (long list!)
 - ``history \| tail -n [num]``: list only the last [num] previous commands
 - ``![num]``: repeat command [num] in the history
@@ -42,6 +52,7 @@
 - ``ls *.txt \| xargs cat``: prints (using cat) the contents of all text-files in current dir
 
 ### Special characters
+
 - ``*``: wildcard, matches zero or more characters
 - ``?``: wildcard, matches exactly one character
 - ``\``: escape character (e.g. to cd into a folder with a space in its name)
@@ -51,18 +62,8 @@
 - ``""``: Lines in double-quotes are interpreted as strings, but variables in them are parsed.
 - ``''``: Lines in single-quotes are interpreted strictly as strings — no parsing.
 
-### Environmental variables
-- ``$PS1``: the prompt string. default $PS1 = “\h:\W \u\$”
-- ``$PATH``: colon-separated list of paths to bin folders
-
-```
-parse_git_branch() { # defines a shell function: run "git branch" and extract branch name
-   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
-}
-PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
-```
-
 ### Shortcut commands
+
 - ``^A`` (Ctrl-A): move cursor to the start of the line
 - ``^E``: move cursor to the end of the line
 - ``^C``: stop/kill a running program, cancel current action
@@ -73,11 +74,25 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``ps``: see list of currently-running processes. PID = process ID.
 - ``top``: see list of all processes, refreshed, with CPU & memory consumption
 - ``kill``: send a signal to a process
-- ``kill -9 [PID]``: kill process [PID] 
+- ``kill -9 [PID]``: kill process [PID]
+
+### Environmental variables
+
+- ``$PS1``: the prompt string. default $PS1 = “\h:\W \u\$”
+- ``$PATH``: colon-separated list of paths to bin folders
+
+```
+parse_git_branch() { # defines a shell function: run "git branch" and extract branch name
+   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
+```
 
 ---
 
+
 ## File handling
+
 - ``pwd``: “print working directory,” i.e. state your current location
 - ``cd``: “change directory.” With no arguments, takes you to your home directory.
     - ``cd .. ``: go to the parent directory (up one level)
@@ -125,6 +140,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``exit``:
 
 ### Text editing
+
 - ``open [filename]``: use default program to open [filename]
 - ``cat [filename]`` : print the full text of a file
 - ``less [filename]``: print the text of a file, page by page. Name from “less is more.”
@@ -166,6 +182,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
   - ``tar -xf archive.tar``: extract all files from archive.tar
 
 ### Searching & regex
+
 - ``find "and"``: search for files with names containing “and”
     - ``-type d``: find directories
     - ``-type f``: find files
@@ -201,6 +218,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 
 ---
 
+
 ## Shell scripting
 
 - ``bash [scriptname]``: execute [scriptname] as a bash shell script
@@ -210,6 +228,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``[command] &``: execute [command] in the background
 
 ### Pipes & redirection
+
 - ``[command] > [file]``: redirect output of [command] and save it as a textfile, [file]
     - ``[command] 0> [file]``: save inputs to [command] as [file]
     - ``[command] 1> [file]``: save outputs from [command] as [file]
@@ -221,6 +240,7 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``[line1] | [line2]``: uses output of [line1] as input to [line2]
 
 ### Arithmetic
+
 - ``((i++))``: increment variable i (set value of variable i to i+1)
 - ``((i+=1))``: increment variable i
 - ``((i--))``: decrement variable i
@@ -230,21 +250,23 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
 - ``echo ((i++))``: print value of i, then increment it
 
 ### The basic loop
+
 ``for [varname] in [listofinputs] ; do [command] ; done
 - ``${varname}``: return variable string [varname], which was an argument (without the $)
 - ``${varname:X:Y}``: return Y characters of varname, starting at position X
 
 ### Conditional statements
+
+#### Conditional examples
+
 ```
-if [ $i -lt 800 ] # (the spaces after `[` and before `]` are REQUIRED)
+if [ $i -lt 800 ] # (the spaces after [ and before ] are REQUIRED)
 then
   echo "i is less than 800"
 else
   echo "i is not less than 800"
 fi
-```
 
-```
 if [ $# -lt 1 -o ! -f $1 -o ! -r $1 ]  # if number of args is less than one, OR if the first argument is not a file, OR if the first argument isn’t readable…
 then
   echo "error: no argument, or no file, or file not readable"
@@ -252,7 +274,8 @@ then
 fi
 ```
 
-#### Some conditional-test expressions:
+#### Some conditional-test expressions
+
 - ``-z str``: string str is empty
 - ``str1 = str2``: strings ``str1`` and ``str2`` are identical.
 	- not identical: ``str1 != str2``
@@ -270,25 +293,61 @@ fi
 - ``-w [file]``: ``[file]`` is writable
 - ``-x [file]``: ``[file]`` is executable
 - ``-o, -a, !``: or, and, negation
+ - ``||``: or
+ - ``&&``: and
 - Use ``( )`` to group tests
 
 ---
 
-## Git and version control
-(needs to be updated)
+
+## Git: collaboration & version control
+
+### Local repository commands
+
+- ``git init``: turns the current folder into a new, empty Git repository
+- ``git config``: *[?]*
 - ``git status``: shows which files have/haven't been edited and/or staged for committing
 - ``git add [file]``: stages a file (&/or its changes) for committing
+	- ``git add -A``: stages all un-staged changes for committing
 - ``git rm [file]``: removes a file from Git tracking
 - ``git mv [file1] [file2]``: renames/moves a file and updates Git records accordingly
 - ``git commit``: commits changes to the Git record
-- ``git checkout -- .``: *(version control? undo prev. command?)*
-- ``git config``: 
+	- ``git commit --amend``: change commit messsage (only) for the last commit. DO NOT USE if you've already pushed it to Github! (Just generally never delete things you've already pushed. It's rude to your collaborators.)
+- ``git checkout [commit] -- filename``: pull the version of ``filename`` from ``[commit]``
+	- e.g. ``git checkout 832eabda4cb -- readme.md`` pulls ``readme.md`` from commit 832eabda4cb
+	- ``git checkout --`` (without a filename) pulls the whole project
+	- ``git checkout --track origin/readme-changes``: pulls info on branch ``readme-changes``
+- ``git revert``: revert changes, create a new commit.
+	- ``git revert HEAD``: create a new commit whose actions cancel the actions of the previous commit
+	- ``git revert HEAD~1``: ditto, but revert to the second-to-last commit (erasing both the previous commit and the one before)
+- Don't use ``git reset`` or ``git rebase`` unless you know exactly what you're doing: they change the git history and will mess up your collaborators. Even if you know what you're doing, don't use them after pushing the affected commits.
+	
+### Github sync and collaboration
+
 - ``git clone``: copy the contents of a repository into a new folder in the current directory on my local machine. Must have read access to the repository.
     - e.g. ``git clone git@github.com:vsbuffalo/bds-files.git``
+- ``git pull``:
+- ``git push origin branchname``: push current local commit to ``branchname`` in the original Github repository
+	- ``git push -u origin branchname``: remember this branch and keep me on it
+- ``git branch``: lists all currently-existing branches (the asterisk shows which branch I'm currently on)
+	- ``git branch branchname``: creates a new branch called ``branchname``
+	- ``git branch -d branchname``: deletes the branch called ``branchname``
+	- ``git branch -vv``: list all existing branches "very verbosely", i.e. show latest commit with message for each branch
+- ``git fetch --all``: pull down everything new from this repository, incl. branches *and* files
+
 
 ---
 
+
 ## Remote server commands
+
+## Checksums
+
+- ``shasum [thing]``: get the SHA checksum for ``[thing]`` (a file, string, etc)
+- `md5 [thing]`: get the MD5 checksum for `[thing]`
+
+### SSH
+
 - ``ssh adinicola@submit-3.chtc.wisc.edu``: connect to my submit server
 - ``cd /mnt/gluster/adinicola``: move to my gluster directory
 - ``cd /home/adinicola``: move back to my home directory on the submit server
@@ -300,6 +359,7 @@ fi
 - ``/Users/Alexa/.ssh/id_rsa.pub``: my public key
 
 ### CHTC and HTCondor
+
 <http://chtc.cs.wisc.edu/>
 <http://research.cs.wisc.edu/htcondor/manual/current/2_5Submitting_Job.html>
 <http://research.cs.wisc.edu/htcondor/manual/current/2_6Managing_Job.html>

@@ -9,6 +9,8 @@
 - [File handling](#file-handling)
     - [Text editing](#text-editing)
     - [Searching & regex](#searching-&-regex)
+    - [Text processing](#text-processing)
+    	- [awk](#awk)
 - [Shell scripting](#shell-scripting)
     - [Pipes & redirection](#pipes-&-redirection)
     - [Arithmetic](#arithmetic)
@@ -21,6 +23,7 @@
 	- [Github sync and collaboration](#github-sync-and-collaboration)
 - [Remote server commands](#remote-server-commands)
 	- [Checksums](#checksums)
+	- [Getting external data](#getting-external-data)
 	- [SSH](#ssh)
     - [CHTC and HTCondor](#chtc-and-htcondor)
 
@@ -216,6 +219,78 @@ PS1="\W \[\033[33m\]\$(parse_git_branch)\[\033[00m\]$ "
     - ``{4,6}``: between 4 and 6 of the previous
     - ``{4,}``: 4 or more of the previous
 
+### Text processing
+
+- ``sed``: *...*
+	- e.g. ``sed 's///g' file.txt``: *...*
+- ``bioawk``: like ``awk`` (see below), but for biology data formats
+- Parameter expansion: use ``${variable_name extra stuff}``.
+```
+var="coolname.txt.pdf.md"
+i=3678
+echo "var=$var and i=$i"
+echo "substrings of parameter values: ${i:1} and ${var:4:5}" # :offset:length
+echo "strip from the end: ${var%.*}"  # strips shortest occurrence
+echo "strip from the end: ${var%%.*}" # strips longest  occurrence
+echo "strip from beginning: ${var#*.}"  # strips shortest occurrence
+echo "strip from beginning: ${var##*.}" # strips longest  occurrence
+echo "substitute: ${var/cool/hot}"
+echo "delete:     ${var/cool}"
+```
+
+#### awk
+
+``awk '/pattern/ { action }' filename``: *...*
+
+- ``awk`` is a programming language in itself. It works on tabular data.
+- Patterns:
+	- ``A ~ B``: if A matches regex pattern B
+	- ``A !~ B``: if A doesn't match regex pattern B
+	- Combine patterns with and ``&&``, or ``||``
+	- Special patterns: BEGIN, END
+	- Special variables: 
+		- ``$0``: entire record (line)
+		- ``$1``: first field (columns)’s value
+		- ``$2``:  second field’s value, etc.
+		- NR = current record (line) number
+		- NF = number of fields (columns) on current line
+- can do arithmetic operations on field values, standard comparisons (``<=``, ``==`` etc.)
+- extra fields can be printed
+- new variables can be introduced, modified, used (no ``$`` to use them, unlike shell language)
+- Actions: ``if``, ``for``, ``while`` statements can be used
+- many built-in functions, like ``exit``, ``sub(regexp, replacement, string)``, ``substr(string, i, j)``, and ``split(string, array, delimiter)``
+- By default, inputs are assumed to be tab-delimited. For a csv file, change to comma with ``-F","``
+- Examples from Cécile's class notes, using ``example.bed`` from **[...?]**:
+	- ``awk  '{ print $0 }' example.bed``: This is like ``cat``. Since there's no pattern, it defaults to true.
+	- ``awk '{ print $2 "\t" $3 }' example.bed``: This works like ``cut -f2,3``.
+	- ``awk '$3 - $2 > 18' example.bed``: prints lines (default action) if feature length > 18 (bed 0-based)
+	- ``awk '$1 ~ /chr1/ && $3 - $2 > 10' example.bed``: prints lines if feature length > 18 *and* feature is on chromosome 1
+	- Using variables:
+		- ``threshold=18 ; awk '$3 - $2 > $threshold' example.bed``: This throws an error because ``$`` is reserved for awk fields. You can't use shell variables within the ``awk`` program.
+		- ``awk -v t=$threshold '$3 - $2 > t' example.bed``: The ``-v`` option lets you define variables within ``awk``, including using shell variables to define ``awk`` variables.
+	- Combining a pattern with an action: ``awk '$1 ~ /chr2|chr3/ { print $0 "\t" $3 - $2 }' example.bed`` prints the whole line, a tab, and then the difference between the third and second field. (In context, this prints the name, beginning position, ending position, and length for all genes on chromosomes 2 and 3.)
+	- ``awk 'BEGIN{ s = 0 }; { s += ($3-$2) }; END{ print "mean: " s/NR };' example.bed``: Calculates and prints the mean feature length, for all the genes in the file:
+		1. starts with variable ``s``, value 0
+		2. on each line, adds the difference between columns 3 and 2 (i.e. the gene length) to ``s``
+		3. at the end, divides ``s`` (now the sum of all genes' lengths) by NR (the number of lines/rows in the input) to get the average gene length
+		4. then prints "mean:  " and the value of that average
+	- ``awk 'NR >= 3 && NR <= 5' example.bed``: prints lines 3, 4, and 5 only
+	- ``awk -F "\t" '{print NF; exit}' Mus_musculus.GRCm38.75_chr1.bed``: number of columns (fields) on 1st line
+	- ``grep -v "^#" Mus_musculus.GRCm38.75_chr1.gtf | awk -F "\t" '{print NF; exit}'``: removes the header (lines that start with #) in a gtf file, then pipes the results to determine how many columns there are in the actual *data*
+
+A multiline ``awk`` command:
+```
+awk '/Lypla1/ { feature[$3] += 1 };
+    END { for (k in feature)
+    print k "\t" feature[k] }' Mus_musculus.GRCm38.75_chr1.gtf  | column -t
+```
+1. First pattern-action pair. For every line that matches ``/Lypla1/``, add the third column to ``feature``, or increment the relevant value in ``feature`` if that third column is already represented.
+	- Note that ``feature`` is an array (because square brackets), AKA a dictionary (in Python) or hash (in Perl). It consists of a set of keys (~names), each of which has an associated numerical value.
+	- Line ends in a semicolon, which ends the first pattern-action pair.
+2. Second pattern-action pair: No pattern. Start a ``for`` loop over the keys in ``feature``.
+3. Finish the ``for`` loop by printing the value, a tab, and then the key.
+4. After finishing the loop, pipe the ``awk`` output to ``column`` for easier viewing.
+
 ---
 
 
@@ -321,7 +396,9 @@ fi
 	- ``git revert HEAD``: create a new commit whose actions cancel the actions of the previous commit
 	- ``git revert HEAD~1``: ditto, but revert to the second-to-last commit (erasing both the previous commit and the one before)
 - Don't use ``git reset`` or ``git rebase`` unless you know exactly what you're doing: they change the git history and will mess up your collaborators. Even if you know what you're doing, don't use them after pushing the affected commits.
-	
+- ``git stash``: creates something like a temporary snapshot, to save changes that are not ready for a commit when you need to get back to the previous commit.
+	- Example use: you made changes, working from the master branch, and realize that these changes will need to be committed on a different branch. ``git stash`` will temporarily save those changes and back out to the previous commit. You can then create the new branch and switch to it: ``git checkout -b mybranch``, then do ``git stash pop`` to bring those changes back (but now on the desired branch).
+
 ### Github sync and collaboration
 
 - ``git clone``: copy the contents of a repository into a new folder in the current directory on my local machine. Must have read access to the repository.
@@ -346,6 +423,21 @@ fi
 - ``shasum [thing]``: get the SHA checksum for ``[thing]`` (a file, string, etc)
 - `md5 [thing]`: get the MD5 checksum for `[thing]`
 
+### Getting external data
+
+- ``wget``: *...*
+	- *...*
+	- *...*
+- ``curl``: Like ``wget``, but instead of *saving* the external file to disk, writes it to stdout.
+	- It can use ``sftp`` among other protocols (more than ``wget``)
+	- It can follow redirected pages with ``--location``
+	- Some options:
+		- ``-O``, ``-o``: *...*
+		- ``--limit-rate``: Limit download speed, to avoid getting kicked off websites for suspected DOS
+		- ``-I`` or ``--head``: to get header only. On ftp files: file size
+		- ``-s``: Silent, with no progress meter and no error messages
+		- ``-#``: Display only a simple progress bar and no progress meter
+	
 ### SSH
 
 - ``ssh adinicola@submit-3.chtc.wisc.edu``: connect to my submit server

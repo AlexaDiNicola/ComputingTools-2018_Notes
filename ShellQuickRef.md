@@ -97,7 +97,6 @@
 
 ### Text editing
 
-
 - ``open file``: use default program to open ``file``
 - ``cat file`` : print the full text of ``file``
 - ``less file``: print the text of ``file``, page by page. Name from “less is more.”
@@ -153,6 +152,7 @@
 ---
 
 ## Shell scripting
+[back to top](#contents)
 
 - ``bash scriptname``: execute ``scriptname`` as a bash shell script
 - ``{1..9}``: set of the integers 1-9
@@ -212,6 +212,7 @@ fi
 ---
 
 ## Git and version control
+[back to top](#contents)
 (needs to be updated)
 - ``git status``: shows which files have/haven't
 - ``git add [file]``: stages a file (&/or its changes) for committing
@@ -225,6 +226,8 @@ fi
 ---
 
 ## Remote server commands
+[back to top](#contents)
+
 - ``ssh adinicola@submit-3.chtc.wisc.edu``: connect to my submit server
 - ``cd /mnt/gluster/adinicola``: move to my gluster directory
 - ``cd /home/adinicola``: move back to my home directory on the submit server
@@ -240,5 +243,5 @@ fi
 - ``condor_rm [job ID]``: flag a job for cancellation & removal
 - ``condor_ssh_to_job [job ID]``: access files, etc., in a running job
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNjcxNjMyMTUwXX0=
+eyJoaXN0b3J5IjpbLTE4MDQ2MDA4MTldfQ==
 -->

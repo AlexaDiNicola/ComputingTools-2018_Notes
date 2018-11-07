@@ -21,6 +21,7 @@
 ---
 
 ## Basic shell commands
+[back to top](#contents)
 
 ### Getting help
 - ``command --help``: brief help on ``command``
@@ -55,9 +56,11 @@
 - ``top``: see list of all processes, refreshed, with CPU & memory consumption
 - ``kill -9 PID``: kill process ``PID``
 
----
+-----
 
 ## File handling
+[back to top](#contents)
+
 - ``pwd``: “print working directory,” i.e. state your current location
 - ``cd``: “change directory.” With no arguments, takes you to your home directory.
     - ``cd ../Folder/Subfolder``: go up one level, then into ``Subfolder``, which is in ``Folder``
@@ -93,6 +96,8 @@
 - ``cat 1 2``: concatenate ``1`` and ``2``
 
 ### Text editing
+
+
 - ``open file``: use default program to open ``file``
 - ``cat file`` : print the full text of ``file``
 - ``less file``: print the text of ``file``, page by page. Name from “less is more.”
@@ -234,3 +239,6 @@ fi
     - ``condor_q -analyze [job ID]``: see diagnostic info on [job]
 - ``condor_rm [job ID]``: flag a job for cancellation & removal
 - ``condor_ssh_to_job [job ID]``: access files, etc., in a running job
+<!--stackedit_data:
+eyJoaXN0b3J5IjpbNjcxNjMyMTUwXX0=
+-->

@@ -58,6 +58,10 @@ def choose(n,k,log=0):
     2.30259
     >>> choose(5,0)
     1
+    >>> choose(5,9)
+    Traceback (most recent call last):
+    ...
+    AssertionError: Error: k must be between zero and n.
     """
     assert n>0, "Error: n must be greater than zero."
     assert 0 <= k and k <= n, "Error: k must be between zero and n."
